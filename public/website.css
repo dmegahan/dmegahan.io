@@ -8,8 +8,12 @@ html {
     width: 100%;
 }
 
+:root {
+    --text-color-white: gainsboro;
+}
+
 #name {
-    color: #EEEEEE;
+    color: var(--text-color-white);
     font-size: 72px;
 }
 
@@ -33,16 +37,12 @@ html {
 
 .description-container {
     margin: 0 auto;
-    color: #EEEEEE;
+    color: var(--text-color-white);
     width: 480px;
 }
 
-.link:link {
-    color: gainsboro;;
-}
-
-.link:visited {
-    color: gainsboro;
+.link:link, .link:visited {
+    color: var(--text-color-white);
 }
 
 #title-container {
@@ -74,6 +74,7 @@ html {
     left: 50px;
     width: 25%;
     text-align: center;
+    color: var(--text-color-white);
 }
 
 #bottom-links {
