@@ -6,7 +6,7 @@ console.log('\n\n--- Node Version: ' + process.version + ' ---');
 
 // Set up Connect routing
 var app = connect()
-    .use(serveStatic(__dirname + '/public'))
+    .use(serveStatic(__dirname + '/src'))
     .use(function(req, res) {
         console.log('Could not find handler for: ' + req.url);
         res.end('Could not find handler for: ' + req.url);
