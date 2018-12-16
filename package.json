@@ -1,0 +1,28 @@
+{
+  "name": "dmegahan.io",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "connect": "^3.6.6",
+    "express": "^4.16.4",
+    "react": "^16.5.2",
+    "serve-static": "^1.13.2",
+    "requirejs": "^2.3.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dmegahan/dmegahan.io.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dmegahan/dmegahan.io/issues"
+  },
+  "homepage": "https://github.com/dmegahan/dmegahan.io#readme"
+}
