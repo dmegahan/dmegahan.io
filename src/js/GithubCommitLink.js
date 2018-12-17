@@ -1,7 +1,3 @@
-window.onload = function() {
-    insertCommit(getLatestCommit());
-}
-
 function getLatestCommit(){
     var Git = require('nodegit');
     Git.Repository.open("https://github.com/dmegahan/dmegahan.io").then(function(repository){
@@ -13,7 +9,4 @@ function getLatestCommit(){
     })
 }
 
-function insertCommit(gitCommit)
-{
-    document.getElementById("gitCommit").innerHTML = gitCommit;
-}
+module.exports.getLatestCommit = getLatestCommit;

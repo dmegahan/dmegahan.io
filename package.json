@@ -6,9 +6,10 @@
   "dependencies": {
     "connect": "^3.6.6",
     "express": "^4.16.4",
+    "nodegit": "^0.23.0",
     "react": "^16.5.2",
-    "serve-static": "^1.13.2",
-    "requirejs": "^2.3.6"
+    "requirejs": "^2.3.6",
+    "serve-static": "^1.13.2"
   },
   "devDependencies": {},
   "scripts": {
