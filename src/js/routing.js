@@ -4,7 +4,6 @@ var git = require('./GithubCommitLink.js');
 //get latest Commit (as Promise), then assign the promise value
 var latestCommit = git.getLatestCommit();
 latestCommit.then(value => {
-    console.dir(value);
     latestCommit = value;
 });
 
