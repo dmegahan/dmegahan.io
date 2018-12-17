@@ -11,6 +11,10 @@ function view(templateName, values, response)
     response.write(fileContents);
 }
 
+/*
+    Add our values to the html by looking for text like "{{test}}" 
+    and replacing it with the matching key (in this case, test)
+*/
 function mergeValues(values, content)
 {
     for(var key in values)
