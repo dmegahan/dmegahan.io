@@ -4,13 +4,8 @@
   "description": "",
   "main": "server.js",
   "dependencies": {
-    "child_process": "^1.0.2",
-    "connect": "^3.6.6",
     "express": "^4.16.4",
-    "nodegit": "^0.23.0",
-    "react": "^16.5.2",
-    "requirejs": "^2.3.6",
-    "serve-static": "^1.13.2"
+    "nodegit": "^0.23.0"
   },
   "devDependencies": {},
   "scripts": {
