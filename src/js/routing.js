@@ -17,4 +17,15 @@ function home(request, response)
     response.end();
 }
 
+function blog(request, response)
+{
+    response.writeHead(200, {'Content-Type': 'text/html'});
+    renderer.view('header', {}, response);
+    //blog page created by parsing database of posts, and shoving them into a template
+    renderer.view('blog', {}, response);
+    renderer.view('footer', latestCommit, response);
+    response.end();
+}
+
 module.exports.home = home;
+module.exports.blog = blog;
