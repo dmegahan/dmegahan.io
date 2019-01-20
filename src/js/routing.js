@@ -1,6 +1,7 @@
 const renderer = require('./renderer.js');
 const git = require('./GithubCommitLink.js');
 const fetch = require('isomorphic-fetch');
+const pug = require('pug');
 
 //get latest Commit (as Promise), then assign the promise value
 var latestCommit = git.getLatestCommit();
@@ -10,12 +11,17 @@ latestCommit.then(value => {
 
 function home(req, res)
 {
+    /*
     res.writeHead(200, {'Content-Type': 'text/html'});
     renderer.view('header', {}, res);
     renderer.view('body', {}, res);
 
     renderer.view('footer', latestCommit, res);
     res.end();
+    */
+
+    //pug implementation
+    res.render('home.pug');
 }
 
 function blog(req, res)

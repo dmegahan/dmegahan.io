@@ -8,6 +8,9 @@ server.use(express.static(__dirname + '/src/images'));
 server.use(express.static(__dirname + '/src/components'));
 server.use(express.static(__dirname + '/src/js'));
 
+server.set('view engine', 'pug');
+server.set('views', __dirname + '/src/views');
+
 server.get('/', (request, response) => {
     routing.home(request, response);
 });
