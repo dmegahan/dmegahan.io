@@ -1,1 +1,12 @@
-section#posts
+extends index.pug
+
+mixin post(title, body)
+    li
+        p #{title}
+        p #{body}
+
+block body
+    section#posts
+        ul
+            each post in posts
+                +post(post.title, post.body)

@@ -21,7 +21,7 @@ function home(req, res)
     */
 
     //pug implementation
-    res.render('home.pug');
+    res.render('index.pug');
 }
 
 function blog(req, res)
@@ -40,14 +40,19 @@ function blog(req, res)
         .then(function(data) {
             //do shit
             console.log(data[0].title + ", " + data[0].body);
+            console.log(data);
+            res.render('blog.pug', {posts: data});
         })
     
+    /*
     res.writeHead(200, {'Content-Type': 'text/html'});
     renderer.view('header', {}, res);
     //blog page created by parsing database of posts, and shoving them into a template
     renderer.view('blog', {}, res);
     renderer.view('footer', latestCommit, res);
     res.end();
+    */
+    
 }
 
 module.exports.home = home;
