@@ -1,4 +1,4 @@
-const git = require('./GithubCommitLink.js');
+const git = require('../GithubCommitLink.js');
 const fetch = require('isomorphic-fetch');
 
 //get latest Commit (as Promise), then assign the promise value
@@ -34,7 +34,12 @@ function blog(req, res)
         })
         .then(function(data) {
             //do shit
-            res.render('blog.pug', {posts: data, githubCommit: gitCommit_short['gitCommit-short']});
+            res.render('blog.pug', 
+            {
+                posts: data, 
+                githubCommit_short: latestCommit['gitCommit-short'],
+                githubCommit_hash: latestCommit['gitCommit-hash'],
+            });
         })
 }
 

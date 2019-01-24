@@ -1,4 +1,4 @@
-const routing = require('./src/js/routing.js');
+const routing = require('./src/js/routes/routing.js');
 const express = require('express');
 const MongoClient = require('mongodb').MongoClient;
 
