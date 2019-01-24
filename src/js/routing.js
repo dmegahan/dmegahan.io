@@ -1,27 +1,22 @@
-const renderer = require('./renderer.js');
 const git = require('./GithubCommitLink.js');
 const fetch = require('isomorphic-fetch');
-const pug = require('pug');
 
 //get latest Commit (as Promise), then assign the promise value
 var latestCommit = git.getLatestCommit();
+var gitCommit_short;
+var gitCommit_hash;
 latestCommit.then(value => {
     latestCommit = value;
 });
 
 function home(req, res)
 {
-    /*
-    res.writeHead(200, {'Content-Type': 'text/html'});
-    renderer.view('header', {}, res);
-    renderer.view('body', {}, res);
-
-    renderer.view('footer', latestCommit, res);
-    res.end();
-    */
-
     //pug implementation
-    res.render('index.pug');
+    res.render('index.pug', 
+    {
+        githubCommit_short: latestCommit['gitCommit-short'],
+        githubCommit_hash: latestCommit['gitCommit-hash']
+    });
 }
 
 function blog(req, res)
@@ -39,20 +34,8 @@ function blog(req, res)
         })
         .then(function(data) {
             //do shit
-            console.log(data[0].title + ", " + data[0].body);
-            console.log(data);
-            res.render('blog.pug', {posts: data});
+            res.render('blog.pug', {posts: data, githubCommit: gitCommit_short['gitCommit-short']});
         })
-    
-    /*
-    res.writeHead(200, {'Content-Type': 'text/html'});
-    renderer.view('header', {}, res);
-    //blog page created by parsing database of posts, and shoving them into a template
-    renderer.view('blog', {}, res);
-    renderer.view('footer', latestCommit, res);
-    res.end();
-    */
-    
 }
 
 module.exports.home = home;
