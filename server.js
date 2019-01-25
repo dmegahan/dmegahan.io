@@ -27,3 +27,10 @@ MongoClient.connect(url, (err, client) => {
         console.log('HTTP server listening on port 80');
     })
 });
+
+server.get('/posts', (req, res) => {
+    db.collection('posts').find().toArray((err, result) => {
+        if(err) return console.log(err);
+        res.send(result);
+    })
+});

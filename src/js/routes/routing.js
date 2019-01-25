@@ -18,14 +18,6 @@ router.get('/blog', (request, response) => {
     blog(request, response);
 });
 
-router.get('/posts', (req, res) => {
-    db.collection('posts').find().toArray((err, result) => {
-        if(err) return console.log(err);
-        res.send(result);
-    })
-});
-
-
 function home(req, res)
 {
     //pug implementation
