@@ -11,13 +11,7 @@ server.use(express.static(__dirname + '/src/js'));
 server.set('view engine', 'pug');
 server.set('views', __dirname + '/src/views');
 
-server.get('/', (request, response) => {
-    routing.home(request, response);
-});
-
-server.get('/blog', (request, response) => {
-    routing.blog(request, response);
-});
+server.use('/', routing);
 
 let db;
 const dbName = 'dmegahanIO'
@@ -33,12 +27,3 @@ MongoClient.connect(url, (err, client) => {
         console.log('HTTP server listening on port 80');
     })
 });
-
-//API endpoint for getting blog posts
-server.get('/posts', (req, res) => {
-    db.collection('posts').find().toArray((err, result) => {
-        if(err) return console.log(err);
-        res.send(result);
-    })
-});
-

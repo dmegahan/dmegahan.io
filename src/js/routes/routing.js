@@ -1,13 +1,30 @@
 const git = require('../GithubCommitLink.js');
 const fetch = require('isomorphic-fetch');
+const express = require('express');
+const router = express.Router();
 
 //get latest Commit (as Promise), then assign the promise value
 var latestCommit = git.getLatestCommit();
-var gitCommit_short;
-var gitCommit_hash;
 latestCommit.then(value => {
     latestCommit = value;
 });
+
+
+router.get('/', (request, response) => {
+    home(request, response);
+});
+
+router.get('/blog', (request, response) => {
+    blog(request, response);
+});
+
+router.get('/posts', (req, res) => {
+    db.collection('posts').find().toArray((err, result) => {
+        if(err) return console.log(err);
+        res.send(result);
+    })
+});
+
 
 function home(req, res)
 {
@@ -43,5 +60,4 @@ function blog(req, res)
         })
 }
 
-module.exports.home = home;
-module.exports.blog = blog;
+module.exports = router;
