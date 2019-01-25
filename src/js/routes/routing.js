@@ -9,27 +9,16 @@ latestCommit.then(value => {
     latestCommit = value;
 });
 
-
-router.get('/', (request, response) => {
-    home(request, response);
-});
-
-router.get('/blog', (request, response) => {
-    blog(request, response);
-});
-
-function home(req, res)
-{
+router.get('/', (req, res) => {
     //pug implementation
     res.render('index.pug', 
     {
         githubCommit_short: latestCommit['gitCommit-short'],
         githubCommit_hash: latestCommit['gitCommit-hash']
     });
-}
+});
 
-function blog(req, res)
-{
+router.get('/blog', (req, res) => {
     //server-side fetch requires the full url, so generate the baseUrl based off the request
     const baseUrl = req ? `${req.protocol}://${req.get('Host')}` : '';
     //query the api endpoint set up in server.js
@@ -37,12 +26,13 @@ function blog(req, res)
         .then(function(res){
             if(res.ok)
             {
+                //do a GET request, get all the blog posts from the request
                 return res.json();
             }
             throw new Error('Request failed.');
         })
         .then(function(data) {
-            //do shit
+            //render the blog.pug layout, insert all posts from the GET request into the template
             res.render('blog.pug', 
             {
                 posts: data, 
@@ -50,6 +40,6 @@ function blog(req, res)
                 githubCommit_hash: latestCommit['gitCommit-hash'],
             });
         })
-}
+});
 
 module.exports = router;
