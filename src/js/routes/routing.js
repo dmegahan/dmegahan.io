@@ -28,7 +28,7 @@ router.get('/', (req, res) => {
     });
 });
 
-router.get('/blog', (req, res) => {
+router.get('/blog', (req, res, next) => {
     //server-side fetch requires the full url, so generate the baseUrl based off the request
     const baseUrl = req ? `${req.protocol}://${req.get('Host')}` : '';
     //query the api endpoint set up in server.js
@@ -57,13 +57,13 @@ router.get('/login', (req, res) => {
 });
 
 var User = require("../../models/user.model");
-router.post('/userLogin', (req, res) => {
+router.post('/login', (req, res, next) => {
     User.authenticate(req.body.username, req.body.password, (error, user) => {
         //callback 
         if(error || !user) {
             var err = new Error('Wrong username or password.');
             err.status = 401;
-            return next(err);
+            next(err);
         }
         else
         {
@@ -75,9 +75,9 @@ router.post('/userLogin', (req, res) => {
 });
 
 var Post = require("../../models/post.model");
-router.get('/posts', (req, res) => {
+router.get('/posts', (req, res, next) => {
     Post.find({}, (err, posts) => {
-        if(err) return console.log(err);
+        if(err) next(err);
         res.send(posts);
     });
 });
@@ -86,19 +86,47 @@ router.get('/create', (req, res) => {
     res.render('create.pug')
 });
 
-router.post('/createPost', (req, res) => {
-    console.log(req.session.userId);
+router.post('/create', (req, res, next) => {
+    var err;
+    if(!req.session.userId)
+    {
+        err = new Error("You are not logged in and/or unable to create blog posts with your current permissions.");
+        err.status = 401;
+        next(err);
+    }
     req.body['author'] = req.session.userId;
     var rawTags = req.body['tags'];
     //split raw tags on commas
     req.body['tags'] = rawTags.split(',');
     var newPost = new Post(req.body);
-    console.log(newPost);
     Post.create(newPost, (err, post) => {
-        if (err) return console.log(err);
-        res.redirect('/blog');
+        if (err) 
+        {
+            next(err);
+        }
+        else
+        {
+            res.redirect('/blog');
+        }
     });
 });
 
+router.use(logErrors);
+router.use(generalError);
+
+function logErrors(err, req, res, next)
+{
+    console.error(err.stack);
+    next(err);
+}
+
+function generalError(err, req, res, next)
+{
+    res.render('error.pug',
+    {
+        status: err.status,
+        message: err.message
+    });
+}
 
 module.exports = router;

@@ -12,7 +12,6 @@ let UserSchema = new Schema({
 UserSchema.statics.authenticate = function (username, password, callback) {
     this.findOne({username: username})
         .exec((err, user) => {
-            console.log(user);
             if(err)
             {
                 return callback(err);
