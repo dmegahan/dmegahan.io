@@ -4,11 +4,14 @@
   "description": "",
   "main": "server.js",
   "dependencies": {
+    "bcrypt": "^3.0.3",
+    "body-parser": "^1.18.3",
     "es6-promise": "^4.2.5",
     "express": "^4.16.4",
+    "express-session": "^1.15.6",
     "isomorphic-fetch": "^2.2.1",
     "mongodb": "^3.1.10",
-    "mongoose": "^5.4.5",
+    "mongoose": "^5.4.8",
     "nodegit": "^0.23.0",
     "pug": "^2.0.3"
   },

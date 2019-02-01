@@ -1,0 +1,12 @@
+extends index.pug
+
+block body
+    section#login-form
+        p Login
+        form(action="/userLogin" method="POST")
+            p username:
+                input(type="text" name="username" placeholder="")
+            p password:
+                input(type="text" name="password" placeholder="")
+            input(type="submit" value="Login")
+        

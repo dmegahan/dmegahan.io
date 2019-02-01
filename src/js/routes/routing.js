@@ -2,6 +2,16 @@ const git = require('../GithubCommitLink.js');
 const fetch = require('isomorphic-fetch');
 const express = require('express');
 const router = express.Router();
+const bodyParser = require('body-parser');
+const session = require('express-session');
+
+router.use(bodyParser.urlencoded({extended: true}));
+
+router.use(session({
+    secret: 'git gud',
+    resave: true,
+    saveUninitialized: false
+}));
 
 //get latest Commit (as Promise), then assign the promise value
 var latestCommit = git.getLatestCommit();
@@ -40,6 +50,37 @@ router.get('/blog', (req, res) => {
                 githubCommit_hash: latestCommit['gitCommit-hash'],
             });
         })
+});
+
+router.get('/login', (req, res) => {
+    res.render('login.pug');
+});
+
+
+var User = require("../../models/user.model");
+router.post('/userLogin', (req, res) => {
+    User.authenticate(req.body.username, req.body.password, (error, user) => {
+        //callback 
+        if(error || !user) {
+            var err = new Error('Wrong username or password.');
+            err.status = 401;
+            return next(err);
+        }
+        else
+        {
+            //pulls _id from mongodb generated ID
+            req.session.userId = user._id;
+            return res.redirect('/');
+        }
+    });
+});
+
+var Post = require("../../models/post.model");
+router.get('/posts', (req, res) => {
+    Post.find({}, (err, posts) => {
+        if(err) return console.log(err);
+        res.send(posts);
+    });
 });
 
 module.exports = router;
