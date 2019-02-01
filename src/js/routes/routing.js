@@ -56,7 +56,6 @@ router.get('/login', (req, res) => {
     res.render('login.pug');
 });
 
-
 var User = require("../../models/user.model");
 router.post('/userLogin', (req, res) => {
     User.authenticate(req.body.username, req.body.password, (error, user) => {
@@ -70,7 +69,7 @@ router.post('/userLogin', (req, res) => {
         {
             //pulls _id from mongodb generated ID
             req.session.userId = user._id;
-            return res.redirect('/');
+            return res.redirect('/create');
         }
     });
 });
@@ -82,5 +81,24 @@ router.get('/posts', (req, res) => {
         res.send(posts);
     });
 });
+
+router.get('/create', (req, res) => {
+    res.render('create.pug')
+});
+
+router.post('/createPost', (req, res) => {
+    console.log(req.session.userId);
+    req.body['author'] = req.session.userId;
+    var rawTags = req.body['tags'];
+    //split raw tags on commas
+    req.body['tags'] = rawTags.split(',');
+    var newPost = new Post(req.body);
+    console.log(newPost);
+    Post.create(newPost, (err, post) => {
+        if (err) return console.log(err);
+        res.redirect('/blog');
+    });
+});
+
 
 module.exports = router;

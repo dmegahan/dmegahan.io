@@ -1,0 +1,14 @@
+extends index.pug
+
+block body
+    section#create-post
+        p Login
+        form(action="/createPost" method="POST")
+            p Title:
+                input(type="text" name="title" placeholder="")
+            p Body:
+                input(type="text" name="body" placeholder="")
+            p Tags:
+                input(type="text" name="tags" placeholder="")
+            input(type="submit" value="CreatePost")
+        
