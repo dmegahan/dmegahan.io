@@ -52,6 +52,27 @@ router.get('/blog', (req, res, next) => {
         })
 });
 
+router.get('/blog/:title', (req, res, next) => {
+    //parse the :title and try to find a match (hyphens in place of spaces)
+    const baseUrl = req ? `${req.protocol}://${req.get('Host')}` : '';
+    fetch(baseUrl + '/posts/' + req.params.title, {method: 'GET'})
+        .then(function(res){
+            if(res.ok)
+            {
+                return res.json();
+            }
+            throw new Error('Request failed.');
+        })
+        .then(function(data) {
+            res.render('blog.pug',
+            {
+                posts: data,
+                githubCommit_short: latestCommit['gitCommit-short'],
+                githubCommit_hash: latestCommit['gitCommit-hash'],
+            });
+        });
+});
+
 router.get('/login', (req, res) => {
     res.render('login.pug');
 });
@@ -82,22 +103,32 @@ router.get('/posts', (req, res, next) => {
     });
 });
 
+router.get('/posts/:title', (req, res, next) => {
+    Post.find({urlTitle: req.params.title}, (err, posts) => {
+        if(err) next(err);
+        res.send(posts);
+    });
+});
+
 router.get('/create', (req, res) => {
     res.render('create.pug')
 });
 
 router.post('/create', (req, res, next) => {
     var err;
-    if(!req.session.userId)
+    if(!req.session.userId) //some basic checking, should fix this up later to be more robust
     {
         err = new Error("You are not logged in and/or unable to create blog posts with your current permissions.");
         err.status = 401;
         next(err);
     }
+
     req.body['author'] = req.session.userId;
     var rawTags = req.body['tags'];
     //split raw tags on commas
     req.body['tags'] = rawTags.split(',');
+    req.body['urlTitle'] = makeStringURLFriendly(req.body['title']);
+
     var newPost = new Post(req.body);
     Post.create(newPost, (err, post) => {
         if (err) 
@@ -110,6 +141,17 @@ router.post('/create', (req, res, next) => {
         }
     });
 });
+
+//Take in a title and process it to be url friendly
+function makeStringURLFriendly(str)
+{
+    //a string is url friendly if it contains no spaces. We'll replace spaces with hyphens
+    let urlStr = str.replace(/ +(?= )/g,''); //if there are multiple spaces, replace them with 1 space instead
+    urlStr = urlStr.replace(/ /g, '-');; //replace the spaces with hyphens
+
+    //we don't care about caps or anything, so make it all lower case
+    return urlStr.toLowerCase();
+}
 
 router.use(logErrors);
 router.use(generalError);
