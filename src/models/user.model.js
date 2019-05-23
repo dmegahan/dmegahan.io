@@ -3,10 +3,23 @@ const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
 
 let UserSchema = new Schema({
-    username: {type: String, required: true, max: 100, unique: true, trim: true},
-    password: {type: String, required: true},
-    passwordConf: {type: String, required: true},
-    dateCreated: {type: Date, required: true, default: Date.now },
+    username: {
+        type: String, 
+        required: true, 
+        max: 100, 
+        unique: true, 
+        trim: true
+    },
+    password: {
+        type: String, 
+        required: true, 
+        trim: true
+    },
+    dateCreated: {
+        type: Date, 
+        required: true, 
+        default: Date.now 
+    },
 }, {collection: 'users'});
 
 UserSchema.statics.authenticate = function (username, password, callback) {
@@ -46,7 +59,6 @@ UserSchema.pre('save', function (next) {
             return next(err);
         }
         user.password = hash;
-        user.passwordConf = hash;
         next();
     });
 });

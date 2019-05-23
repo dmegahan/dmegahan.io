@@ -79,20 +79,26 @@ router.get('/login', (req, res) => {
 
 var User = require("../../models/user.model");
 router.post('/login', (req, res, next) => {
-    User.authenticate(req.body.username, req.body.password, (error, user) => {
-        //callback 
-        if(error || !user) {
-            var err = new Error('Wrong username or password.');
-            err.status = 401;
-            next(err);
-        }
-        else
+    if( req.body.username &&
+        req.body.password)
         {
-            //pulls _id from mongodb generated ID
-            req.session.userId = user._id;
-            return res.redirect('/create');
+            User.authenticate(req.body.username, req.body.password, (error, user) => {
+                //callback 
+                if(error || !user) {
+                    var err = new Error('Wrong username or password.');
+                    err.status = 401;
+                    next(err);
+                }
+                else
+                {
+                    //pulls _id from mongodb generated ID
+                    req.session.userId = user._id;
+                    return res.redirect('/create');
+                }
+            });
+        } else {
+            //TODO: add error here
         }
-    });
 });
 
 var Post = require("../../models/post.model");
