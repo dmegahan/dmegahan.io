@@ -5,6 +5,12 @@ var session = require('express-session');
 
 var server = express();
 
+server.use(session({
+    secret: "memes",
+    resave: true,
+    saveUninitialized: false
+}))
+
 server.use(express.static(__dirname + '/src/images'));
 server.use(express.static(__dirname + '/src/components'));
 server.use(express.static(__dirname + '/src/js'));

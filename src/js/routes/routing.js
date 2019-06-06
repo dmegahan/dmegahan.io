@@ -125,11 +125,11 @@ router.post('/create', (req, res, next) => {
     if(!req.session.userId) //some basic checking, should fix this up later to be more robust
     {
         err = new Error("You are not logged in and/or unable to create blog posts with your current permissions.");
-        err.status = 401;
+        err.status = 403;
         next(err);
     }
 
-    req.body['author'] = req.session.userId;
+    req.body['author'] = user;
     var rawTags = req.body['tags'];
     //split raw tags on commas
     req.body['tags'] = rawTags.split(',');

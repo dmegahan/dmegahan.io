@@ -50,10 +50,10 @@ UserSchema.statics.authenticate = function (username, password, callback) {
 
 //TODO: add a pre function here that takes in a req.body and creates the proper user schema from it
 
-//hash the password before saving
+//hash the password before saving (pre save hook)
 UserSchema.pre('save', function (next) {
     var user = this;
-    console.log(user);
+
     bcrypt.hash(user.password, 10, function(err, hash) {
         if (err) {
             return next(err);
